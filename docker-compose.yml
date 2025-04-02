@@ -16,7 +16,7 @@ services:
     restart: always
 
   analytix-backend:
-    build: 
+    build:
       context: ./analytix-backend
       dockerfile: docker/${DOCKER_ENV}/Dockerfile
       args:
@@ -30,7 +30,7 @@ services:
     env_file:
       - ./analytix-backend/docker/${DOCKER_ENV}/.env
     volumes:
-      - ./analytix-backend:/app 
+      - ./analytix-backend:/app
 
   analytix-frontend:
     build:
@@ -44,6 +44,8 @@ services:
     networks:
       - app_network
     restart: always
+    env_file:
+      - ./analytix-frontend/docker/${DOCKER_ENV}/.env
 
 networks:
   app_network:
