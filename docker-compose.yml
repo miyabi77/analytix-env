@@ -27,6 +27,8 @@ services:
     networks:
       - app_network
     restart: always
+    volumes:
+      - ./analytix-backend:/app 
 
   analytix-frontend:
     build:
