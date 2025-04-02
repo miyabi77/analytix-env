@@ -36,3 +36,9 @@ services:
 networks:
   app_network:
     driver: bridge
+
+volumes:
+  app_data:
+    driver: local
+    driver_opts:
+      size: "10GB"
