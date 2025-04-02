@@ -16,16 +16,28 @@ services:
     restart: always
 
   analytix-backend:
-    build: ./analytix-backend
+    build: 
+      context: ./analytix-backend
+      dockerfile: docker/${DOCKER_ENV}/Dockerfile
+      args:
+        DOCKER_ENV: ${DOCKER_ENV}
     container_name: analytix-backend
     expose:
       - "8080"
     networks:
       - app_network
     restart: always
+    env_file:
+      - ./analytix-backend/docker/${DOCKER_ENV}/.env
+    volumes:
+      - ./analytix-backend:/app 
 
   analytix-frontend:
-    build: ./analytix-frontend
+    build:
+      context: ./analytix-frontend
+      dockerfile: docker/${DOCKER_ENV}/Dockerfile
+      args:
+        DOCKER_ENV: ${DOCKER_ENV}
     container_name: analytix-frontend
     expose:
       - "3000"
