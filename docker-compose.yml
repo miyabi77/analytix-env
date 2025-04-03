@@ -46,6 +46,9 @@ services:
     restart: always
     env_file:
       - ./analytix-frontend/docker/${DOCKER_ENV}/.env
+    volumes:
+      - ./analytix-frontend:/app
+      - /app/node_modules
 
 networks:
   app_network:
