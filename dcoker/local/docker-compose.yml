@@ -1,0 +1,59 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "8081:8081"
+    volumes:
+      - ../../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - analytix-frontend
+      - analytix-backend
+    networks:
+      - app_network
+    restart: always
+
+  analytix-backend:
+    build:
+      context: ../../analytix-backend
+      dockerfile: docker/${DOCKER_ENV}/Dockerfile
+      args:
+        DOCKER_ENV: ${DOCKER_ENV}
+    container_name: analytix-backend
+    expose:
+      - "8080"
+    networks:
+      - app_network
+    restart: always
+    env_file:
+      - ../../analytix-backend/docker/${DOCKER_ENV}/.env
+    volumes:
+      - ../../analytix-backend:/app
+
+  analytix-frontend:
+    build:
+      context: ../../analytix-frontend
+      dockerfile: docker/${DOCKER_ENV}/Dockerfile
+      args:
+        DOCKER_ENV: ${DOCKER_ENV}
+    container_name: analytix-frontend
+    expose:
+      - "3000"
+    networks:
+      - app_network
+    restart: always
+    env_file:
+      - ../../analytix-frontend/docker/${DOCKER_ENV}/.env
+    volumes:
+      - ../../analytix-frontend:/app
+      - /app/node_modules
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  app_data:
+    driver: local
+    driver_opts:
+      size: "10GB"
